@@ -66,16 +66,12 @@ class BreadCrumbProvider extends ChangeNotifier {
   }
 }
 
-typedef OnBreadCrumbTapped = void Function(BreadCrumb);
-
 class BreadCrumbsWidget extends StatelessWidget {
   final UnmodifiableListView<BreadCrumb> breadCrumb;
-  final OnBreadCrumbTapped onTapped;
 
   const BreadCrumbsWidget({
     super.key,
     required this.breadCrumb,
-    required this.onTapped,
   });
 
   @override
@@ -83,16 +79,10 @@ class BreadCrumbsWidget extends StatelessWidget {
     return Wrap(
       children: breadCrumb.map(
         (breadCrumb) {
-          return GestureDetector(
-            onTap: () {
-              onTapped(breadCrumb);
-              breadCrumb.activate();
-            },
-            child: Text(
-              breadCrumb.title,
-              style: TextStyle(
-                  color: breadCrumb.isActive ? Colors.blue : Colors.black),
-            ),
+          return Text(
+            breadCrumb.title,
+            style: TextStyle(
+                color: breadCrumb.isActive ? Colors.blue : Colors.black),
           );
         },
       ).toList(),
@@ -116,7 +106,6 @@ class MyApp extends StatelessWidget {
           Consumer<BreadCrumbProvider>(
             builder: (context, value, child) {
               return BreadCrumbsWidget(
-                onTapped: (_) {},
                 breadCrumb: value.items,
               );
             },
